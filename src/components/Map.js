@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-
-import { GoogleMap, Marker, withGoogleMap, withScriptjs } from "react-google-maps"
+import { withGoogleMap, withScriptjs } from "react-google-maps";
+import OuterMap from './OuterMap';
 
 const Map = withScriptjs(withGoogleMap((props) =>
-  <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: -34.397, lng: 150.644 }}
-  >
-    {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />}
-  </GoogleMap>
-))
+  <OuterMap center={ props.center }/>
+));
 
 export default Map;
