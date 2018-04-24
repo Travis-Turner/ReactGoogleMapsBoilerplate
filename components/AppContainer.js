@@ -17,7 +17,7 @@ class AppContainer extends Component {
             position={this.props.center}
           />
           :
-          <LocateForm />
+          <LocateForm onManualLocate={this.props.onManualLocate}/>
         }
       </div>
     )
