@@ -10,14 +10,16 @@ class App extends Component {
     super(props);
     this.state = {
       center: {
-        lat: -34.397,
-        lng: 150.644
+        lat: null,
+        lng: null
       },
       located: false,
-      loaded: false
+      loaded: false,
+      error: null
     }
     this.onLocate = this.onLocate.bind(this);
     this.onLocateFail = this.onLocateFail.bind(this);
+    this.onManualLocate = this.onManualLocate.bind(this);
   }
   //Get user location success.
   onLocate (pos){
@@ -37,13 +39,27 @@ class App extends Component {
       loaded: true
     }))
   }
-  //User enters ZIP code.
+  //User enters ZIP code - find location with axios.
+  // Note that the proper this context is maintained to set state asynchronously
   onManualLocate(zip){
-    console.log('success!', zip);
+    const self = this;
+    const key = 'KzVSZF09LmnsKvCl7mdT4EhxNrMXocOuPuaexcj7VjXFwNxjExNzMNhyHTBwDEca';
+    const zipCode = zip;
+    fetch(`https://www.zipcodeapi.com/rest/${key}/info.json/${zipCode}/degrees`)
+      .then((res) => {
+        return res.json();
+      })
+      .then(({lat, lng}) => {
+        self.setState(() => ({
+          center: {
+            lat,
+            lng
+          }
+        }))
+      });
   }
   //Attempt to find user position.
   componentDidMount(){
-    alert('hi');
     navigator.geolocation.getCurrentPosition(this.onLocate, this.onLocateFail, {
       timeout: 7000
     });
