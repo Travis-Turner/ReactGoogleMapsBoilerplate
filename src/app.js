@@ -34,10 +34,14 @@ class App extends Component {
   }
   //Set default location if unable to fetch location.
   onLocateFail (){
-    this.setState(() => ({
-      located: false,
-      loaded: true
-    }))
+    // Deprecated code to fall back to FORM.
+    // this.setState(() => ({
+    //   located: false,
+    //   loaded: true
+    // }))
+    navigator.geolocation.getCurrentPosition(this.onLocate, this.onLocateFail, {
+      timeout: 7000
+    });
   }
   //User enters ZIP code - find location with axios.
   // Note that the proper this context is maintained to set state asynchronously
